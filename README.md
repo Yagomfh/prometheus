@@ -1,4 +1,4 @@
-# Prometheus
+# 🔥 Prometheus 🔥
 
 A modern full-stack web application built with TanStack Start, featuring a robust tech stack and developer-friendly setup.
 
