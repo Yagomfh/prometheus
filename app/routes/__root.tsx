@@ -12,6 +12,7 @@ import { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
 
 import { DefaultCatchBoundary } from "~/components/default-catch-boundary";
 import { Provider } from "~/components/ui/provider";
+import { Toaster } from "~/components/ui/toaster";
 import { auth } from "~/lib/auth";
 import appCss from "~/styles/app.css?url";
 import { AppRouter } from "~/trpc/router";
@@ -39,14 +40,14 @@ export const Route = createRootRouteWithContext<{
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       ...seo({
-        title: "kolm start",
+        title: "Prometheus",
         description:
-          "TanStack Start starter with tRPC, Drizzle ORM, better-auth and TailwindCSS ",
+          "TanStack Start starter with tRPC, Drizzle ORM, better-auth and Chakra UI",
       }),
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.svg" },
+      { rel: "icon", href: "/favicon.png" },
     ],
   }),
   errorComponent: (props) => {
@@ -73,8 +74,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body className="antialiased font-display min-h-screen flex flex-col">
-        <Provider>{children}</Provider>
+      <body>
+        <Provider>
+          {children}
+          <Toaster />
+        </Provider>
         <TanStackRouterDevtools position="bottom-right" />
         <ReactQueryDevtools buttonPosition="bottom-left" />
         <Scripts />

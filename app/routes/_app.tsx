@@ -1,5 +1,5 @@
 // This _app component functions as a layout component that wraps all authenticated routes in the app. It is a good place to put things like a header, footer, or sidebar that you want to appear on every page of your app.
-import { Button, HStack } from "@chakra-ui/react";
+import { Box, Button, HStack, VStack } from "@chakra-ui/react";
 import {
   createFileRoute,
   Link,
@@ -33,7 +33,6 @@ function Header() {
         </Link>
         <nav>
           <HStack gap={4}>
-            <Link to="/users">Users</Link>
             <Button
               onClick={async () =>
                 await signOut({
@@ -57,11 +56,11 @@ function Header() {
 // This layout component is a simple layout that includes a header and a main content area. The main content area is where the child routes will be rendered.
 function LayoutComponent() {
   return (
-    <div className="flex flex-col h-screen">
+    <VStack h={"100vh"} alignItems={"stretch"}>
       <Header />
-      <main className="gap-2 p-4 flex-1">
+      <Box gap={2} flex={1} p={4}>
         <Outlet />
-      </main>
-    </div>
+      </Box>
+    </VStack>
   );
 }

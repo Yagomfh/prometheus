@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   Button,
   Center,
-  Checkbox,
   Field,
   Heading,
   IconButton,
@@ -18,16 +17,16 @@ import { z } from "zod";
 
 import { Logo } from "~/components/logo";
 import { toaster } from "~/components/ui/toaster";
-import { signIn } from "~/lib/auth-client";
+import { signUp } from "~/lib/auth-client";
 import { isInvalid, IsInvalidT } from "~/utils/forms";
 
-const SignInSchema = z.object({
+const SignUpSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(8),
-  rememberMe: z.boolean(),
+  password: z.string().min(8).max(128),
+  name: z.string().min(1),
 });
 
-export const Route = createFileRoute("/auth/sign-in")({
+export const Route = createFileRoute("/auth/sign-up")({
   component: RouteComponent,
 });
 
@@ -39,17 +38,17 @@ function RouteComponent() {
     defaultValues: {
       email: "",
       password: "",
-      rememberMe: false,
+      name: "",
     },
     validators: {
-      onChange: SignInSchema,
+      onChange: SignUpSchema,
     },
     onSubmit: async ({ value }) => {
       setIsLoading(true);
-      const res = await signIn.email({
+      const res = await signUp.email({
         email: value.email,
         password: value.password,
-        rememberMe: value.rememberMe,
+        name: value.name,
         fetchOptions: {
           onSuccess: () => {
             router.invalidate();
@@ -70,8 +69,8 @@ function RouteComponent() {
       <VStack bg="white" p={6} rounded="md" shadow="xl" minW="300px" gap={8}>
         <VStack gap={2}>
           <Logo />
-          <Heading>Welcome back</Heading>
-          <Text>Sign in to your account to continue</Text>
+          <Heading>Welcome on board</Heading>
+          <Text>Create an account to continue</Text>
         </VStack>
         <form
           onSubmit={(e) => {
@@ -83,7 +82,38 @@ function RouteComponent() {
             width: "100%",
           }}
         >
-          <VStack gap={3} width="100%" align="flex-start">
+          <VStack gap={2}>
+            <form.Field name="name">
+              {(field) => (
+                <Field.Root
+                  invalid={isInvalid({
+                    field: field.state.meta as IsInvalidT["field"],
+                    form: {
+                      submissionAttempts: form.state.submissionAttempts,
+                    },
+                  })}
+                >
+                  <Field.Label>
+                    <Field.RequiredIndicator />
+                    Name
+                  </Field.Label>
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    placeholder="Enter your name"
+                  />
+                  <Field.ErrorText>
+                    {field.state.meta.errors
+                      .map((err) => err?.message)
+                      .join(",")}
+                  </Field.ErrorText>
+                </Field.Root>
+              )}
+            </form.Field>
+
             <form.Field name="email">
               {(field) => (
                 <Field.Root
@@ -162,26 +192,13 @@ function RouteComponent() {
               )}
             </form.Field>
 
-            <form.Field name="rememberMe">
-              {(field) => (
-                <Checkbox.Root>
-                  <Checkbox.HiddenInput
-                    checked={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.checked)}
-                  />
-                  <Checkbox.Control />
-                  <Checkbox.Label>Remember me</Checkbox.Label>
-                </Checkbox.Root>
-              )}
-            </form.Field>
-
             <Button w="100%" type="submit" loading={isLoading} mt={4}>
-              Sign in
+              Sign up
             </Button>
           </VStack>
         </form>
-        <Link to="/auth/sign-up">
-          <Text>Don&apos;t have an account? Sign up</Text>
+        <Link to="/auth/sign-in">
+          <Text>Already have an account? Sign in</Text>
         </Link>
       </VStack>
     </Center>
