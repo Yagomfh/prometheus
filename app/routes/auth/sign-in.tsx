@@ -5,6 +5,7 @@ import {
   Checkbox,
   Field,
   Heading,
+  HStack,
   IconButton,
   Input,
   InputGroup,
@@ -180,9 +181,12 @@ function RouteComponent() {
             </Button>
           </VStack>
         </form>
-        <Link to="/auth/sign-up">
-          <Text>Don&apos;t have an account? Sign up</Text>
-        </Link>
+        <HStack>
+          <Text>Don&apos;t have an account?</Text>
+          <Link to="/auth/sign-up" style={{ textDecoration: "underline" }}>
+            <Text>Sign up</Text>
+          </Link>
+        </HStack>
       </VStack>
     </Center>
   );

@@ -4,6 +4,7 @@ import {
   Center,
   Field,
   Heading,
+  HStack,
   IconButton,
   Input,
   InputGroup,
@@ -197,9 +198,12 @@ function RouteComponent() {
             </Button>
           </VStack>
         </form>
-        <Link to="/auth/sign-in">
-          <Text>Already have an account? Sign in</Text>
-        </Link>
+        <HStack>
+          <Text>Already have an account?</Text>
+          <Link to="/auth/sign-in" style={{ textDecoration: "underline" }}>
+            <Text>Sign in</Text>
+          </Link>
+        </HStack>
       </VStack>
     </Center>
   );

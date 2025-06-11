@@ -1,15 +1,14 @@
 // This _app component functions as a layout component that wraps all authenticated routes in the app. It is a good place to put things like a header, footer, or sidebar that you want to appear on every page of your app.
-import { Box, Button, HStack, VStack } from "@chakra-ui/react";
+import { Box, HStack, VStack } from "@chakra-ui/react";
 import {
   createFileRoute,
   Link,
   Outlet,
   redirect,
-  useRouter,
 } from "@tanstack/react-router";
 
+import AccountMenu from "~/components/account-menu";
 import { Logo } from "~/components/logo";
-import { signOut } from "~/lib/auth-client";
 
 export const Route = createFileRoute("/_app")({
   beforeLoad: ({ context: { session } }) => {
@@ -23,8 +22,6 @@ export const Route = createFileRoute("/_app")({
 });
 
 function Header() {
-  const router = useRouter();
-
   return (
     <header>
       <HStack justify="space-between" p={4} shadow="md">
@@ -32,21 +29,7 @@ function Header() {
           <Logo />
         </Link>
         <nav>
-          <HStack gap={4}>
-            <Button
-              onClick={async () =>
-                await signOut({
-                  fetchOptions: {
-                    onSuccess: () => {
-                      router.invalidate();
-                    },
-                  },
-                })
-              }
-            >
-              Sign out
-            </Button>
-          </HStack>
+          <AccountMenu />
         </nav>
       </HStack>
     </header>
